@@ -79,6 +79,8 @@
         background: white;
       }
       </style>
+
+      <!-- CUSTOM HERE -->
       <div id="mapHTMLReportGenerator_21" style="width:100%;height:500px;"></div>
       <div id="info-pane" class="leaflet-bar">Click roadbed to Inspect</div>
         <!-- <div class="leaflet-top leaflet-Right">
@@ -236,7 +238,7 @@
 
 onEachFeature: function (feature, layer) {
   var coords = feature.geometry.coordinates;
-  console.log(feature.geometry.coordinates[-1])
+  console.log(feature.geometry.coordinates);
   var newArray = [];
   for (var i=0; i < coords.length; i++){
     var oldcoords = coords[i];
@@ -309,13 +311,13 @@ onEachFeature: function (feature, layer) {
     // }
 },
 
-var myWindow = window.open("U:/FME/Test_Html/davidtest26.html");
-style:function (feature){
-switch (feature.properties.roadbedType) {
-  case 'Add Roadbed': return {color:"#ff0000"};
-  case 'Add Route' : return {color: "#0000ff"};
-}
-}
+// var myWindow = window.open("U:/FME/Test_Html/davidtest26.html");
+// style:function (feature){
+// switch (feature.properties.roadbedType) {
+//   case 'Add Roadbed': return {color:"#ff0000"};
+//   case 'Add Route' : return {color: "#0000ff"};
+// }
+// }
 });
 </script>
 </body>

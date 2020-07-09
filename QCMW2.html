@@ -1,0 +1,219 @@
+﻿<!DOCTYPE html>
+<html>
+   <head>
+      <title>Report</title>
+      <meta charset="UTF-8">
+      <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+      <style>
+        tr:hover{
+          background-color:#73b6e6;
+        }
+      </style>
+   </head>
+   <body>
+      <H3 style="color:rgb(255,0,0)" class="text-center">QCMW2 PRE QA_QC Report</H3>
+      <table class="table table-bordered">
+         <thead>
+            <tr>
+               <th>Route ID</th>
+               <th>Error List</th>
+               <th>Complete</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr>
+               <td>1579893609</td>
+               <td>GID: 1579893609 on route  already exists. Choose another GID.</td>
+               <td><input type="checkbox"></td>
+            </tr>
+            <tr>
+               <td>1579893836</td>
+               <td>GID: 1579893836 on route  already exists. Choose another GID.</td>
+               <td><input type="checkbox"></td>
+            </tr>
+            <tr>
+               <td>1579893609</td>
+               <td>hey US0059-RP you got some overlaps. You might want to review.</td>
+               <td><input type="checkbox"></td>
+            </tr>
+         </tbody>
+      </table>
+<hr style="border-width:3px ">
+      <style>
+      #info-pane {
+        position: absolute;
+        top: 300px;
+        right: 10px;
+        z-index: 400;
+        padding: 1em;
+        background: white;
+      }
+      </style>
+<div id="mapHTMLReportGenerator_21" style="width:100%;height:500px;"></div>
+      <div id="info-pane" class="leaflet-bar">Click roadbed to Inspect</div>
+        <!-- <div class="leaflet-top leaflet-Right">
+          <input type="button" id="Btnl1" value="Submit" onclick="Saveroutes()" class="btnStyle leaflet-control"/>
+          <span id="mapHTMLReportGenerator_21" class="lblStyle span3 leaflet-control">Submit: </span>
+        </div> -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/leaflet.css" />
+      <link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css" />
+      <link rel="stylesheet" href="https://js.arcgis.com/3.31/esri/css/esri.css">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/leaflet.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-editable/1.2.0/Leaflet.Editable.js"></script>
+      <script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.min.js"></script>
+      <script src="https://npmcdn.com/leaflet-geometryutil@0.9.3/src/leaflet.geometryutil.js"></script>
+               <script src="https://unpkg.com/esri-leaflet@2.2.3/dist/esri-leaflet.js"></script>
+      <script src="https://js.arcgis.com/3.31/"></script>
+      <script>
+         var map = L.map('mapHTMLReportGenerator_21', {editable: true}).setView([0, 0], 3);
+                      L.esri.basemapLayer("Imagery").addTo(map);
+   var layer = L.geoJSON([
+   {
+    "type":"Feature",
+    "properties":{
+      "name":"1579893609",
+      "roadbedType": "10",
+      "BeginDFO":"0",
+      "EndDFO":"0.176",
+      "SegmentLength":"0.176",
+      "popupContent":"1566417848",
+      "errorMessage":"GID: 1579893609 on route  already exists. Choose another GID."
+
+    },
+    "geometry":{
+      "type":"LineString",
+      "coordinates":[[-96.7376373,28.9334595,0],[-96.7376079,28.93338,0.006],[-96.7376032,28.9332314,0.016],[-96.7376305,28.9331392,0.023],[-96.737706,28.9330589,0.03],[-96.7378087,28.9329914,0.037],[-96.7389239,28.9322334,0.123],[-96.7395379,28.9318932,0.167],[-96.7396234,28.9317834,0.176]]
+    }
+  },{
+    "type":"Feature",
+    "properties":{
+      "name":"1579893836",
+      "roadbedType": "10",
+      "BeginDFO":"0",
+      "EndDFO":"0.187",
+      "SegmentLength":"0.187",
+      "popupContent":"1566418341",
+      "errorMessage":"GID: 1579893836 on route  already exists. Choose another GID."
+
+    },
+    "geometry":{
+      "type":"LineString",
+      "coordinates":[[-96.6601796,28.983181,0],[-96.6602212,28.9830749,0.008],[-96.6602594,28.9829765,0.015],[-96.6602934,28.9828741,0.022],[-96.6603544,28.9827456,0.032],[-96.6604802,28.9826303,0.043],[-96.6606678,28.9824899,0.058],[-96.6614689,28.9818453,0.124],[-96.6620813,28.981329,0.175],[-96.6621589,28.9811672,0.187]]
+    }
+  },{
+    "type":"Feature",
+    "properties":{
+      "name":"1579893609",
+      "roadbedType": "10",
+      "BeginDFO":"0,0",
+      "EndDFO":"0.176,0.187",
+      "SegmentLength":"0.176",
+      "popupContent":"1566417848",
+      "errorMessage":"hey US0059-RP you got some overlaps. You might want to review."
+
+    },
+    "geometry":{
+      "type":"LineString",
+      "coordinates":[[-96.7376373,28.9334595,0],[-96.7376079,28.93338,0.006],[-96.7376032,28.9332314,0.016],[-96.7376305,28.9331392,0.023],[-96.737706,28.9330589,0.03],[-96.7378087,28.9329914,0.037],[-96.7389239,28.9322334,0.123],[-96.7395379,28.9318932,0.167],[-96.7396234,28.9317834,0.176]]
+    }
+  }
+],
+
+
+
+
+
+{
+
+onEachFeature: function (feature, layer) {
+  var coords = feature.geometry.coordinates;
+  console.log(feature.geometry.coordinates[-1])
+  var newArray = [];
+  for (var i=0; i < coords.length; i++){
+    var oldcoords = coords[i];
+    var newCoords = [oldcoords[1],oldcoords[0]];
+    newArray.push(newCoords);
+  }
+  map.pm.addControls({
+    position: 'topleft',
+    drawMarker: false,
+    drawCircle: false,
+    drawPolygon: false,
+    drawRectangle: false,
+    drawCircleMarker: false
+  })
+  //console.log(newArray);
+  console.log(typeof layer);
+  //var polyline = L.polyline(newArray)
+  var polyline = L.polyline(newArray,{
+                    function(feature){
+                      var c
+                      var o = 0.75;
+                      switch (feature.properties.roadbedType){
+                        case 'Add Route':
+                          c = 'Blue';
+                          break;
+                        case 'Add Roadbed':
+                          c = 'Red';
+                          break;
+                      }
+                      //return { color: c, opacity: o, weight: 5 };//Not working
+                    }
+                  }).on('dblclick', onClick).addTo(map)
+
+                polyline.on('mouseout', function(e){
+                  document.getElementById('info-pane').innerHTML = 'Click roadbed to Inspect';
+                });
+
+                polyline.on('click', function(e){
+                  document.getElementById('info-pane').innerHTML = "Roadbed Type: "+feature.properties.roadbedType+" </br>GID: "+feature.properties.name+" </br>Segment Length: "+ feature.properties.SegmentLength+"</br>Begin DFO: "+feature.properties.BeginDFO+"</br> End DFO: "+feature.properties.EndDFO+"</br>Error Message: "+feature.properties.errorMessage;
+                });
+
+                polyline.on('click', function(e){
+                  polyline.pm.disable();
+                });
+                function onClick(e){
+                  alert("Thanks for clicking on me bud! You're about to start the journey of editing road network. Los Ghets! ");
+                   polyline.pm.enable({snappable: true, allowSelfIntersection: false});
+
+
+  // .addTo(map);
+
+     //       alert("Hi, you clicked on GID: "+feature.properties.name +" and End DFO is "+feature.properties.EndDFO+" and your Segment Length is "+feature.properties.SegmentLength);
+   }
+
+
+    //polyline.bindPopup(feature.properties.popupContent);
+    //map.editTools.startPolyline();
+    map.fitBounds(polyline.getBounds());
+  ////////////////////////////////////////////
+    // function feature(feature, layer){
+    //   layer.on('mouseover',function(e){
+    //     layer.setStyle({
+    //       color:"DarkRed"
+    //     });
+    //   });
+    //   layer.on('mouseout',function(e){
+    //     layer.setStyle({
+    //       color:'Blue'
+    //     });
+    //   });
+    // }
+},
+
+
+style:function (feature){
+switch (feature.properties.roadbedType) {
+  case 'Add Roadbed': return {color:"#ff0000"};
+  case 'Add Route' : return {color: "#0000ff"};
+}
+}
+});
+</script>
+</body>
+</html>
+
+   </body>
+</html>
+   </body>
+</html>
