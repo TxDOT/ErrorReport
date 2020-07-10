@@ -46,141 +46,194 @@
         </table>
         <script src="https://js.arcgis.com/4.15/"></script>
         <script>
-            require(["esri/Map", "esri/views/MapView", "esri/layers/VectorTileLayer", "esri/Graphic"], function(Map, MapView, VectorTileLayer, Graphic) {
+            require([
+                "esri/Map",
+                "esri/views/MapView",
+                "esri/layers/VectorTileLayer",
+                "esri/layers/FeatureLayer",
+                "esri/Graphic",
+                "dojo/dom"],
+                function(
+                    Map,
+                    MapView,
+                    VectorTileLayer,
+                    FeatureLayer,
+                    Graphic,
+                    dom)
+                {
+                    // Create the Map (this will be replaced with VT basemap)
+                    var map = new Map({
+                        basemap: "satellite",
 
-                // Create the Map (this will be replaced with VT basemap)
-                var map = new Map({
-                    basemap: "satellite"
-                });
-                var spmVectorTile = new VectorTileLayer({
-                    url: "https://tiles.arcgis.com/tiles/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Vector_Tile_Basemap/VectorTileServer",
-                    visible: false
-                });
-                map.add(spmVectorTile);
-
-                // Create the MapView
-                var view = new MapView({
-                    container: "mapHTMLReportGenerator_21",
-                    map: map,
-                    center: [-100, 32],
-                    zoom: 6
-                });
-
-                var errorList = [
-                    {
-                        "type":"Feature",
-                        "properties":{
-                           "name":"1579893609",
-                           "roadbedType": "10",
-                           "BeginDFO":"0",
-                           "EndDFO":"0.176",
-                           "SegmentLength":"0.176",
-                           "popupContent":"1566417848",
-                           "errorMessage":"GID: 1579893609 on route  already exists. Choose another GID."
-                        },
-                        "geometry":{
-                            "type":"LineString",
-                            "coordinates":[[-96.7376373,28.9334595,0],[-96.7376079,28.93338,0.006],[-96.7376032,28.9332314,0.016],[-96.7376305,28.9331392,0.023],[-96.737706,28.9330589,0.03],[-96.7378087,28.9329914,0.037],[-96.7389239,28.9322334,0.123],[-96.7395379,28.9318932,0.167],[-96.7396234,28.9317834,0.176]]
-                        }
-                    },
-                    {
-                       "type":"Feature",
-                       "properties":{
-                           "name":"1579893836",
-                           "roadbedType": "10",
-                           "BeginDFO":"0",
-                           "EndDFO":"0.187",
-                           "SegmentLength":"0.187",
-                           "popupContent":"1566418341",
-                           "errorMessage":"GID: 1579893836 on route  already exists. Choose another GID."
-                        },
-                        "geometry":{
-                            "type":"LineString",
-                            "coordinates":[[-96.6601796,28.983181,0],[-96.6602212,28.9830749,0.008],[-96.6602594,28.9829765,0.015],[-96.6602934,28.9828741,0.022],[-96.6603544,28.9827456,0.032],[-96.6604802,28.9826303,0.043],[-96.6606678,28.9824899,0.058],[-96.6614689,28.9818453,0.124],[-96.6620813,28.981329,0.175],[-96.6621589,28.9811672,0.187]]
-                        }
-                   },
-                   {
-                        "type":"Feature",
-                        "properties":{
-                            "name":"1579893609",
-                            "roadbedType": "10",
-                            "BeginDFO":"0,0",
-                            "EndDFO":"0.176,0.187",
-                            "SegmentLength":"0.176",
-                            "popupContent":"1566417848",
-                            "errorMessage":"hey US0059-RP you got some overlaps. You might want to review."
-                        },
-                        "geometry":{
-                            "type":"LineString",
-                            "coordinates":[[-96.7376373,28.9334595,0],[-96.7376079,28.93338,0.006],[-96.7376032,28.9332314,0.016],[-96.7376305,28.9331392,0.023],[-96.737706,28.9330589,0.03],[-96.7378087,28.9329914,0.037],[-96.7389239,28.9322334,0.123],[-96.7395379,28.9318932,0.167],[-96.7396234,28.9317834,0.176]]
-                        }
-                    }
-                ];
-
-                // iterate the array and construct graphic then add to view
-                constructGraphic();
-                function constructGraphic() {
-                    for (var i=0; i< errorList.length; i++) {
-
-                        var polyLnGraphic = new Graphic({
-                            geometry: {
-                                hasZ: false,
-                                hasM: true,
-                                type: "polyline",
-                                spatialReference: { wkid: 4326 },
-                                paths: errorList[i].geometry.coordinates
-                            },
-                            symbol: {
-                                type: "simple-line",
-                                color: [237, 24, 24],
-                                width: 2
-                            },
-                            attributes: errorList[i].properties,
-                            popupTemplate: {
-                                title: "{name}",
-                                content: [
-                                {
-                                    type: "fields",
-                                    fieldInfos: [
-                                      {
-                                        fieldName: "name"
-                                      },
-                                      {
-                                        fieldName: "roadbedType"
-                                      },
-                                      {
-                                        fieldName: "BeginDFO"
-                                      },
-                                      {
-                                        fieldName: "EndDFO"
-                                      },
-                                      {
-                                        fieldName: "SegmentLength"
-                                      },
-                                      {
-                                        fieldName: "errorMessage"
-                                      }
-                                    ]
-                                }]
-                            }
-                        });
-                        view.graphics.add(polyLnGraphic);
+                    });
+                    var spmVectorTile = new VectorTileLayer({
+                        url: "https://tiles.arcgis.com/tiles/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Vector_Tile_Basemap/VectorTileServer",
+                        visible: false
+                    });
+                    var roadwayTemplate = {
+                        title: "Roadways",
+                        content: [{
+                            type: "fields",
+                            fieldInfos: [{
+                                fieldName: "RTE_NM",
+                                label: "Route ID",
+                                visible: true
+                            }, {
+                                fieldName: "RDBD_TYPE",
+                                label: "Roadbed Type",
+                                visible: true
+                            }, {
+                                fieldName: "MAP_LBL",
+                                label: "Name/Number",
+                                visible: true
+                            } , {
+                                fieldName: "BEGIN_DFO",
+                                label: "Begin DFO",
+                                places: 3,
+                                visible: true
+                            } , {
+                                fieldName: "END_DFO",
+                                label: "End DFO",
+                                places: 3,
+                                visible: true
+                            }]
+                        }]
                     };
-                };
-                // center view on graphics extent
-                view.goTo(view.graphics.items);
+                    var roadwaysRef = new FeatureLayer({
+                        url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Roadways/FeatureServer/0",
+                        visible: true,
+                        opacity: 0.0,
+                        popupEnabled: true,
+                        outFields: ["RTE_NM", "RDBD_TYPE", "MAP_LBL", "RTE_PRFX", "BEGIN_DFO", "END_DFO"],
+                        popupTemplate: roadwayTemplate,
+                        title: "Roadways"
+                    });
+                    map.addMany([spmVectorTile,roadwaysRef]);
 
-                // basemap toggle
-                document.getElementById('mapToggle').onclick = function(){
-                    console.log(spmVectorTile.visible);
-                    if (!spmVectorTile.visible){
-                        spmVectorTile.visible = true;
-                    }
-                    else {
-                        spmVectorTile.visible = false;
-                    }
-                };
-            });
+                    // Create the MapView
+                    var view = new MapView({
+                        container: "mapHTMLReportGenerator_21",
+                        map: map,
+                        center: [-100, 32],
+                        zoom: 6
+                    });
+                    view.ui.remove("attribution");
+
+                    var errorList = [
+                        {
+                            "type":"Feature",
+                            "properties":{
+                               "name":"1579893609",
+                               "roadbedType": "10",
+                               "BeginDFO":"0",
+                               "EndDFO":"0.176",
+                               "SegmentLength":"0.176",
+                               "popupContent":"1566417848",
+                               "errorMessage":"GID: 1579893609 on route  already exists. Choose another GID."
+                            },
+                            "geometry":{
+                                "type":"LineString",
+                                "coordinates":[[-96.7376373,28.9334595,0],[-96.7376079,28.93338,0.006],[-96.7376032,28.9332314,0.016],[-96.7376305,28.9331392,0.023],[-96.737706,28.9330589,0.03],[-96.7378087,28.9329914,0.037],[-96.7389239,28.9322334,0.123],[-96.7395379,28.9318932,0.167],[-96.7396234,28.9317834,0.176]]
+                            }
+                        },
+                        {
+                           "type":"Feature",
+                           "properties":{
+                               "name":"1579893836",
+                               "roadbedType": "10",
+                               "BeginDFO":"0",
+                               "EndDFO":"0.187",
+                               "SegmentLength":"0.187",
+                               "popupContent":"1566418341",
+                               "errorMessage":"GID: 1579893836 on route  already exists. Choose another GID."
+                            },
+                            "geometry":{
+                                "type":"LineString",
+                                "coordinates":[[-96.6601796,28.983181,0],[-96.6602212,28.9830749,0.008],[-96.6602594,28.9829765,0.015],[-96.6602934,28.9828741,0.022],[-96.6603544,28.9827456,0.032],[-96.6604802,28.9826303,0.043],[-96.6606678,28.9824899,0.058],[-96.6614689,28.9818453,0.124],[-96.6620813,28.981329,0.175],[-96.6621589,28.9811672,0.187]]
+                            }
+                       },
+                       {
+                            "type":"Feature",
+                            "properties":{
+                                "name":"1579893609",
+                                "roadbedType": "10",
+                                "BeginDFO":"0,0",
+                                "EndDFO":"0.176,0.187",
+                                "SegmentLength":"0.176",
+                                "popupContent":"1566417848",
+                                "errorMessage":"hey US0059-RP you got some overlaps. You might want to review."
+                            },
+                            "geometry":{
+                                "type":"LineString",
+                                "coordinates":[[-96.7376373,28.9334595,0],[-96.7376079,28.93338,0.006],[-96.7376032,28.9332314,0.016],[-96.7376305,28.9331392,0.023],[-96.737706,28.9330589,0.03],[-96.7378087,28.9329914,0.037],[-96.7389239,28.9322334,0.123],[-96.7395379,28.9318932,0.167],[-96.7396234,28.9317834,0.176]]
+                            }
+                        }
+                    ];
+
+                    // iterate the array and construct graphic then add to view
+                    constructGraphic();
+                    function constructGraphic() {
+                        for (var i=0; i< errorList.length; i++) {
+
+                            var polyLnGraphic = new Graphic({
+                                geometry: {
+                                    hasZ: false,
+                                    hasM: true,
+                                    type: "polyline",
+                                    spatialReference: { wkid: 4326 },
+                                    paths: errorList[i].geometry.coordinates
+                                },
+                                symbol: {
+                                    type: "simple-line",
+                                    color: [237, 24, 24],
+                                    width: 2
+                                },
+                                attributes: errorList[i].properties,
+                                popupTemplate: {
+                                    title: "{name}",
+                                    content: [
+                                    {
+                                        type: "fields",
+                                        fieldInfos: [
+                                          {
+                                            fieldName: "name"
+                                          },
+                                          {
+                                            fieldName: "roadbedType"
+                                          },
+                                          {
+                                            fieldName: "BeginDFO"
+                                          },
+                                          {
+                                            fieldName: "EndDFO"
+                                          },
+                                          {
+                                            fieldName: "SegmentLength"
+                                          },
+                                          {
+                                            fieldName: "errorMessage"
+                                          }
+                                        ]
+                                    }]
+                                }
+                            });
+                            view.graphics.add(polyLnGraphic);
+                        };
+                    };
+                    // center view on graphics extent
+                    view.goTo({
+                        target: view.graphics // need to use expand method
+                    });
+                    // basemap toggle
+                    dom.byId('mapToggle').onclick = function(){
+                        if (!spmVectorTile.visible){
+                            spmVectorTile.visible = true;
+                        }
+                        else {
+                            spmVectorTile.visible = false;
+                        }
+                    };
+                });
         </script>
     </body>
 </html>
