@@ -49,6 +49,13 @@
               </tr>
            </tbody>
         </table>
+        <script>
+            var dojoConfig = {
+                has: {
+                  "esri-featurelayer-webgl": 1
+                }
+            };
+        </script>
         <script src="https://js.arcgis.com/4.15/"></script>
         <script>
             require([
@@ -107,7 +114,8 @@
                     var roadwaysRef = new FeatureLayer({
                         url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Roadways/FeatureServer/0",
                         visible: true,
-                        opacity: 0.0,
+                        opacity: 0.5,
+                        minScale:80000,
                         popupEnabled: true,
                         outFields: ["RTE_NM", "RDBD_TYPE", "MAP_LBL", "RTE_PRFX", "BEGIN_DFO", "END_DFO"],
                         popupTemplate: roadwayTemplate,
@@ -116,14 +124,13 @@
                     map.addMany([spmVectorTile,roadwaysRef]);
 
                     // Create the MapView
-                    var view = new MapView({
+                    var mapView = new MapView({
                         container: "mapHTMLReportGenerator_21",
                         map: map,
                         center: [-100, 32],
                         zoom: 6
                     });
-                    view.ui.remove("attribution");
-
+                    mapView.ui.remove("attribution");
                     var errorList = [
                         {
                             "type":"Feature",
@@ -222,20 +229,23 @@
                                     }]
                                 }
                             });
-                            view.graphics.add(polyLnGraphic);
+                            mapView.graphics.add(polyLnGraphic);
                         };
                     };
                     // center view on graphics extent
-                    view.goTo({
-                        target: view.graphics // need to use expand method
+                    mapView.goTo({
+                        target: mapView.graphics
                     });
                     // basemap toggle
                     dom.byId('mapToggle').onclick = function(){
                         if (!spmVectorTile.visible){
                             spmVectorTile.visible = true;
+                            roadwaysRef.opacity = 0.1;
                         }
                         else {
                             spmVectorTile.visible = false;
+                            roadwaysRef.opacity = 0.5;
+
                         }
                     };
                 });
