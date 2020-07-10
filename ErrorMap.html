@@ -15,7 +15,13 @@
         </style>
     </head>
     <body>
-        <div id="mapHTMLReportGenerator_21" style="width:100%;height:700px;"></div>
+        <div id="mapHTMLReportGenerator_21" style="width:100%;height:700px;">
+            <div id="mapTools" style="position: absolute; top: 100px; left: 10px;">
+                <button id="mapToggle"class="btn btn-secondary">
+                    <i class="esri-icon-basemap"></i>
+                </button>
+            </div>
+        </div>
         <H3 style="color:rgb(255,0,0)" class="text-center">QCMW2 PRE QA_QC Report</H3>
         <table class="table table-bordered">
            <thead>
@@ -42,7 +48,6 @@
                  <td><input type="checkbox"></td>
               </tr>
            </tbody>
-           <button id="mapToggle"class="btn btn-secondary">Basemap</button>
         </table>
         <script src="https://js.arcgis.com/4.15/"></script>
         <script>
